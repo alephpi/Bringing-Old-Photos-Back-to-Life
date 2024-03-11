@@ -36,45 +36,14 @@ The code is tested on Ubuntu with Nvidia GPUs and CUDA installed. Python>=3.6 is
 
 ## Installation
 
-Clone the Synchronized-BatchNorm-PyTorch repository for
+1. Run `git submodule --init --recursive` to clone the Synchronized-BatchNorm-PyTorch repository
 
-```
-cd Face_Enhancement/models/networks/
-git clone https://github.com/vacancy/Synchronized-BatchNorm-PyTorch
-cp -rf Synchronized-BatchNorm-PyTorch/sync_batchnorm .
-cd ../../../
-```
+2. Run `install.sh` to 
 
-```
-cd Global/detection_models
-git clone https://github.com/vacancy/Synchronized-BatchNorm-PyTorch
-cp -rf Synchronized-BatchNorm-PyTorch/sync_batchnorm .
-cd ../../
-```
+  - Download the landmark detection pretrained model
+  - Download the pretrained model, put the file `Face_Enhancement/checkpoints.zip` under `./Face_Enhancement`, and put the file `Global/checkpoints.zip` under `./Global`. Then unzip them respectively.
 
-Download the landmark detection pretrained model
-
-```
-cd Face_Detection/
-wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-bzip2 -d shape_predictor_68_face_landmarks.dat.bz2
-cd ../
-```
-
-Download the pretrained model, put the file `Face_Enhancement/checkpoints.zip` under `./Face_Enhancement`, and put the file `Global/checkpoints.zip` under `./Global`. Then unzip them respectively.
-
-```
-cd Face_Enhancement/
-wget https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life/releases/download/v1.0/face_checkpoints.zip
-unzip face_checkpoints.zip
-cd ../
-cd Global/
-wget https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life/releases/download/v1.0/global_checkpoints.zip
-unzip global_checkpoints.zip
-cd ../
-```
-
-Install dependencies:
+3. Install dependencies (enable virtual env first if necessary)
 
 ```bash
 pip install -r requirements.txt
@@ -152,7 +121,6 @@ python test.py --Quality_restore \
 
 <img src='imgs/global.png'>
 
-
 ### 4) Face Enhancement
 
 We use a progressive generator to refine the face regions of old photos. More details could be found in our journal submission and `./Face_Enhancement` folder.
@@ -160,7 +128,6 @@ We use a progressive generator to refine the face regions of old photos. More de
 <p align="center">
 <img src='imgs/face_pipeline.jpg' width="60%" height="60%"/>
 </p>
-
 
 <img src='imgs/face.png'>
 
@@ -211,7 +178,6 @@ Train the mapping without scratches:
 python train_mapping.py --use_v2_degradation --training_dataset mapping --use_vae_which_epoch 200 --continue_train --name mapping_quality --label_nc 0 --loadSize 256 --fineSize 256 --dataroot [your_data_folder] --no_instance --resize_or_crop crop_only --batchSize 80 --no_html --gpu_ids 0,1,2,3 --nThreads 8 --load_pretrainA [ckpt_of_domainA_SR_old_photos] --load_pretrainB [ckpt_of_domainB_old_photos] --l2_feat 60 --n_downsample_global 3 --mc 64 --k_size 4 --start_r 1 --mapping_n_block 6 --map_mc 512 --use_l1_feat --niter 150 --niter_decay 100 --outputs_dir [your_output_folder] --checkpoints_dir [your_ckpt_folder]
 ```
 
-
 Traing the mapping with scraches:
 ```
 python train_mapping.py --no_TTUR --NL_res --random_hole --use_SN --correlation_renormalize --training_dataset mapping --NL_use_mask --NL_fusion_method combine --non_local Setting_42 --use_v2_degradation --use_vae_which_epoch 200 --continue_train --name mapping_scratch --label_nc 0 --loadSize 256 --fineSize 256 --dataroot [your_data_folder] --no_instance --resize_or_crop crop_only --batchSize 36 --no_html --gpu_ids 0,1,2,3 --nThreads 8 --load_pretrainA [ckpt_of_domainA_SR_old_photos] --load_pretrainB [ckpt_of_domainB_old_photos] --l2_feat 60 --n_downsample_global 3 --mc 64 --k_size 4 --start_r 1 --mapping_n_block 6 --map_mc 512 --use_l1_feat --niter 150 --niter_decay 100 --outputs_dir [your_output_folder] --checkpoints_dir [your_ckpt_folder] --irregular_mask [absolute_path_of_mask_file]
@@ -221,7 +187,6 @@ Traing the mapping with scraches (Multi-Scale Patch Attention for HR input):
 ```
 python train_mapping.py --no_TTUR --NL_res --random_hole --use_SN --correlation_renormalize --training_dataset mapping --NL_use_mask --NL_fusion_method combine --non_local Setting_42 --use_v2_degradation --use_vae_which_epoch 200 --continue_train --name mapping_Patch_Attention --label_nc 0 --loadSize 256 --fineSize 256 --dataroot [your_data_folder] --no_instance --resize_or_crop crop_only --batchSize 36 --no_html --gpu_ids 0,1,2,3 --nThreads 8 --load_pretrainA [ckpt_of_domainA_SR_old_photos] --load_pretrainB [ckpt_of_domainB_old_photos] --l2_feat 60 --n_downsample_global 3 --mc 64 --k_size 4 --start_r 1 --mapping_n_block 6 --map_mc 512 --use_l1_feat --niter 150 --niter_decay 100 --outputs_dir [your_output_folder] --checkpoints_dir [your_ckpt_folder] --irregular_mask [absolute_path_of_mask_file] --mapping_exp 1
 ```
-
 
 ## Citation
 

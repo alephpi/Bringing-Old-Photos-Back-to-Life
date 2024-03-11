@@ -10,5 +10,5 @@ tensorboardX
 scipy
 opencv-python
 einops
-PySimpleGUI
+# PySimpleGUI
 matplotlib
