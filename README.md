@@ -36,7 +36,9 @@ The code is tested on Ubuntu with Nvidia GPUs and CUDA installed. Python>=3.6 is
 
 ## Installation
 
-1. Run `git submodule --init --recursive` to clone the Synchronized-BatchNorm-PyTorch repository
+1. Run `git clone --recurse-submodule` to clone the repo as well as the Synchronized-BatchNorm-PyTorch repository
+
+> Do not run `git clone` first then `git submodule update`, as this will make the symlinks broken (point to a directory that doesn't exist)
 
 2. Run `install.sh` to 
 
